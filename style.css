@@ -1,0 +1,190 @@
+@charset "utf-8";
+@import url('https://fonts.googleapis.com/css2?family=Oxygen:wght@300;400;700&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --color0: #391DF2;
+    --color1: #5941F2;
+    --color2: #4836BF;
+    --color3: #9C99F2;
+    --color4: #F2F2F2;
+
+    font-size: 17px;
+
+}
+
+/**
+ * Global classes
+ */
+
+.link {
+    color: var(--color4);
+}
+
+.show-element {
+    opacity: 1 !important;
+}
+
+/**
+ * Top selectors
+ */
+
+[data-custom-menu] {
+    background-color: var(--color4);
+    color: var(--color2);
+    display: none;
+}
+
+[data-custom-menu] menu {
+    list-style: none;
+    max-width: inherit;
+}
+
+[data-custom-menu] menu li {
+    display: flex;
+    padding: 10px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    width: 350px;
+}
+
+[data-popup] {
+    background-color: var(--color4);
+    position: absolute;
+    list-style: none;
+    width: 150px;
+    text-align: center;
+    z-index: 1;
+    border: 1px solid var(--color3);
+}
+
+[data-popup] li {
+    color: var(--color2);
+    padding: 10px;
+}
+
+[data-popup] li:hover, [data-custom-menu] menu li:hover {
+    background-color: var(--color3);
+    color: var(--color4);
+    cursor: pointer;
+}
+
+
+/**
+ * 
+ */
+body {
+    background-color: var(--color2);
+    font-family: 'Oxygen';
+    color: var(--color4);
+}
+
+.settings {
+    background-color: var(--color4);
+    color: var(--color3);
+    border-radius: 50%;
+    position: absolute;
+    bottom: 5%;
+    right: 5%;
+    cursor: pointer;
+    transition: transform 200ms;
+    user-select: none;
+}
+
+.settings i {
+    font-size: 1.5rem;
+    padding: 10px;
+}
+
+.settings:hover {
+    transform: scale(1.5);
+}
+
+[data-temp-float-text] {
+    position: absolute;
+}
+
+header {
+    color: var(--color3);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+}
+
+header h1 {
+    color: var(--color4);
+}
+
+header .curr-page {
+    font-weight: bold;
+    text-decoration: underline !important;
+}
+
+header .nav-link {
+    color: var(--color3);
+    font-size: 1.3rem;
+    margin: 0 25px;
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: color 200ms;
+    position: relative;
+    font-weight: normal;
+}
+
+header .nav-link .icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+header .nav-link:hover {
+    color: var(--color4);
+}
+
+main {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.main-description {
+    font-size: 2rem;
+}
+
+.simple-tutorial {
+    font-size: 1.2rem;
+    color: var(--color3);
+}
+
+footer {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    text-align: center;
+}
+
+.footer-description {
+    font-size: 1.2rem;
+    color: var(--color3);
+}
+
+@media screen and (max-width: 600px) {
+    footer {
+        font-size: 1rem;
+    }
+}
+
+/**
+ * Hidden elements
+ */
+ .main-description, .simple-tutorial, .footer-description {
+    opacity: 0;
+    transition: opacity 200ms;
+}
