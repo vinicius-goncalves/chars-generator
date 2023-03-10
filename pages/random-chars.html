@@ -1,0 +1,94 @@
+<!DOCTYPE html> 
+<html>
+    <head>
+        
+        <title>Random Chars | vinicius-goncalves.com</title>
+        
+        <meta charset="utf-8">
+        <meta name="robots" content="follow, index">
+        <meta name="view" content="width=device-width, initial-scale=1.0">
+        <meta name="keywords" content="password, chars, generator">
+        <meta name="author" content="github@vinicius-goncalves">
+
+        <link href="../style/random-chars.css" rel="stylesheet alternative" type="text/css">
+        <link href="../style/main-style.css" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+        <script src="../js/custom-elements.js" type="module" defer></script>
+        <script src="../js/methods/random-chars.js" type="module" defer></script>
+
+        <style>
+
+            [data-custom-menu] li {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            [data-custom-menu] li span {
+                margin: 0 10px;
+            }
+
+        </style>
+
+    </head>
+    <body>
+
+        <float-popup-menu 
+            name-icon="tune" 
+            external-text="Settings for chars generator" 
+            target-custom-menu="tune"></float-popup-menu>
+        
+        <aside>
+            <div data-custom-menu="tune">
+                <menu>
+                    <li class="checkbox-wrapper">
+                        <input data-tune-settings="letters" type="checkbox" checked>
+                        <span>Include letters</span>
+                    </li>
+                    <li class="checkbox-wrapper">
+                        <input data-tune-settings="numbers" type="checkbox" checked>
+                        <span>Include numbers</span>
+                    </li>
+                    <li class="checkbox-wrapper">
+                        <input data-tune-settings="symbols" type="checkbox" checked>
+                        <span>Include symbols</span>
+                    </li>
+                    <li class="textbox-wrapper">
+                        <span>Length</span>
+                        <input type="number" value="5" min="1" max="100">
+                    </li>
+                </menu>
+            </div>
+        </aside>
+
+        <header>
+            <h1>Chars Generator</h1>
+            <nav>
+                <a class="nav-link" href="#">Home</a>
+                <a class="nav-link curr-page" data-button="methods" href="#">Methods<i class="material-icons icon">arrow_drop_down</i></a>
+                <a class="nav-link" href="#">About</a>
+            </nav>
+        </header>
+        <main>
+
+            <section class="description-section-wrapper">
+                <h2 class="title">Random Chars</h2>
+                <p class="description">Click on the button "Generate" to generate from random chars.</p>
+                <small class="small-description">Use the <strong>"Tune"</strong> button on the page right side to configure it.</small>
+                
+                <input class="button" data-button="generate" type="button" value="Generate">
+                
+            </section>
+
+
+            <section class="output-wrapper">
+                <output class="final-result"></output>
+            </section>
+
+        </main>
+        <footer>
+            <p class="footer-description">To see more projects, go to <a class="link" target="_blank" href="https://vinicius-goncalves.com">vinicius-goncalves.com</a> and open the "Projects" section.</p>
+        </footer>
+    </body>
+</html>

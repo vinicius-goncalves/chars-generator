@@ -26,6 +26,40 @@
     opacity: 1 !important;
 }
 
+float-popup-menu {
+    background-color: var(--color4);
+    color: var(--color3);
+    border-radius: 50%;
+    position: fixed !important;
+    bottom: 7%;
+    right: 7%;
+    cursor: pointer;
+    transition: transform 200ms;
+    user-select: none;
+}
+
+float-popup-menu i {
+    font-size: 1.9rem !important;
+    padding: 15px;
+}
+
+float-popup-menu:hover {
+    transform: scale(1.2);
+}
+
+.button {
+    padding: 15px;
+    font-size: 1.5rem;
+    background-color: var(--color1);
+    color: var(--color4);
+    outline: none;
+    border: none;
+    width: 250px;
+    cursor: pointer;
+    transition: background-color 200ms;
+    margin: 15px;
+}
+
 /**
  * Top selectors
  */
@@ -34,6 +68,7 @@
     background-color: var(--color4);
     color: var(--color2);
     display: none;
+    position: absolute;
 }
 
 [data-custom-menu] menu {
@@ -47,7 +82,7 @@
     text-align: center;
     align-items: center;
     justify-content: center;
-    width: 350px;
+    width: 250px;
 }
 
 [data-popup] {
@@ -79,27 +114,6 @@ body {
     background-color: var(--color2);
     font-family: 'Oxygen';
     color: var(--color4);
-}
-
-.settings {
-    background-color: var(--color4);
-    color: var(--color3);
-    border-radius: 50%;
-    position: absolute;
-    bottom: 5%;
-    right: 5%;
-    cursor: pointer;
-    transition: transform 200ms;
-    user-select: none;
-}
-
-.settings i {
-    font-size: 1.5rem;
-    padding: 10px;
-}
-
-.settings:hover {
-    transform: scale(1.5);
 }
 
 [data-temp-float-text] {
@@ -144,12 +158,32 @@ header .nav-link:hover {
     color: var(--color4);
 }
 
-main {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+main .description-section-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 90vh;
+    flex-direction: column;
     text-align: center;
+    max-width: 100vw;
+}
+
+.description-section-wrapper {
+    max-width: 750px;
+    margin: 15px 0;
+}
+
+.description-section-wrapper .title {
+    font-size: 2rem;
+}
+
+.description-section-wrapper .description {
+    font-size: 1.5rem;
+}
+
+.description-section-wrapper .small-description {
+    color: var(--color3);
+    font-size: 1rem;
 }
 
 .main-description {

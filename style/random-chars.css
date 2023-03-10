@@ -1,0 +1,14 @@
+.output-wrapper {
+    min-height: 100vh;
+    width: 100%;
+    background-color: var(--color1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.final-result {
+    font-size: 2rem;
+    font-family: 'Arial', sans-serif;
+}
