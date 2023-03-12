@@ -1,3 +1,7 @@
+.float-popup-menus float-popup-menu:nth-child(even) {
+    margin-bottom: 90px;
+}
+
 .output-wrapper {
     min-height: 100vh;
     width: 100%;
@@ -11,4 +15,9 @@
 .final-result {
     font-size: 2rem;
     font-family: 'Arial', sans-serif;
+    color: var(--color3);
+    text-align: center;
+    max-width: 65%;
+    word-wrap: break-word;
+    overflow: hidden;
 }

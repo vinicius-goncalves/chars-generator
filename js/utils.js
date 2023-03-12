@@ -20,20 +20,12 @@ function callPrototype(prototypeOf, attribute, thisContext, ...args) {
 
     if(prototypeOfConstructor === [].constructor) {
         prototypeOf = Array
-    }
-    
-    if(prototypeOfConstructor === ''.constructor) {
+    } else if(prototypeOfConstructor === ''.constructor) {
         prototypeOf = String
-    } 
-    
-    if(prototypeOfConstructor === {}.constructor) {
+    } else if(prototypeOfConstructor === {}.constructor) {
         prototypeOf = Object
-    } 
-    
-    if(prototypeOfConstructor === (function (){}).constructor && toString(prototypeOf) === 'Function') {
-        return thisContext.call(thisContext, ...args)
     }
-
+    
     return prototypeOf.prototype[attribute].call(thisContext, ...args)
 }
 
@@ -41,10 +33,14 @@ function callPrototype(prototypeOf, attribute, thisContext, ...args) {
     DOM Manipulation
 */
 
-function hideElements(selector, single = false) {
+export { hideElements, clearChildren }
+
+function hideElements(options) {
     
+    const { selector, single } = options
+
     if(!selector) {
-        throw new TypeError('"selector" argument cannot be null or undefined. It must be an DOM element or node.')
+        throw new TypeError('"selector" cannot be null or undefined. It must be an DOM element or node.')
     }
 
     const elements = single
@@ -52,12 +48,19 @@ function hideElements(selector, single = false) {
         : document.querySelectorAll(selector)
     
     if(!single) {
-        
-        const elementStyle = elements.style
-        if(elementStyle instanceof CSSStyleDeclaration) {
-            elementStyle.setProperty('display', 'none')
-        }
+        elements.forEach(el => el.style.setProperty('display', 'none'))
         return
+    }
+
+    const elementStyle = elements.style
+    if(elementStyle instanceof CSSStyleDeclaration) {
+        elementStyle.setProperty('display', 'none')
+    }
+}
+
+function clearChildren(root) {
+    while(root.firstChild) {
+        root.firstChild.remove()
     }
 }
 
@@ -69,12 +72,49 @@ export { getSessionStorage, setSessionsStorage }
 
 function getSessionStorage(name) {
     return sessionStorage.getItem(name) === null
-        ? {}
+        ? undefined
         : JSON.parse(sessionStorage.getItem(name))
 }
 
 function setSessionsStorage(name, value) {
     sessionStorage.setItem(name, JSON.stringify(value))
     return getSessionStorage(name)
+
+}
+
+/**
+    Prototype Methods
+*/
+
+export { loadPrototypesMethods }
+
+async function loadPrototypesMethods() {
+
+    
+    function getPromises() {
+        
+        const arrayCount = new Promise(resolve => {
+
+            if(Array.prototype.count) {
+                return
+            }
+
+            Array.prototype.count = function(callbackFn) {
+
+                const arrayReference = Array.isArray(this)
+                    ? this
+                    : []
+
+                return arrayReference.reduce.call(this, 
+                        (acc, item, self) => callbackFn.call(self, item) ? ++acc : acc, 0)
+            }
+
+            resolve({ done: true })
+        })
+
+        return [ arrayCount ]
+    }
+
+    return Promise.all(getPromises()).then(methods => methods.every(method => method.done))
 
 }

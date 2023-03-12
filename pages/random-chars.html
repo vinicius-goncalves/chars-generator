@@ -14,8 +14,10 @@
         <link href="../style/main-style.css" rel="stylesheet" type="text/css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-        <script src="../js/custom-elements.js" type="module" defer></script>
+        <script src="../js/webcomponents/custom-elements.js" type="module" defer></script>
         <script src="../js/methods/random-chars.js" type="module" defer></script>
+        <script src="../js/templates.js" type="module" defer></script>
+        <script src="../js/app.js" type="module" defer></script>
 
         <style>
 
@@ -34,17 +36,26 @@
     </head>
     <body>
 
-        <float-popup-menu 
-            name-icon="tune" 
-            external-text="Settings for chars generator" 
-            target-custom-menu="tune"></float-popup-menu>
-        
         <aside>
+
+            <div data-js="popup">
+                <menu data-popup="language" style="display: none;">
+                    <li data-language="en-US"><img src="../images/flags/us.png"></li>
+                    <li data-language="pt-BR"><img src="../images/flags/br.png"></li>
+                </menu>
+            </div>
+    
+            <div data-custom-menu="settings">
+                <menu>
+                    <li data-popup-target="language"><i class="material-icons">chevron_left</i><span data-id-language="language-popup-menu">Language</span></li>
+                </menu>
+            </div>
+
             <div data-custom-menu="tune">
                 <menu>
                     <li class="checkbox-wrapper">
                         <input data-tune-settings="letters" type="checkbox" checked>
-                        <span>Include letters</span>
+                        <span data-id-language="">Include letters</span>
                     </li>
                     <li class="checkbox-wrapper">
                         <input data-tune-settings="numbers" type="checkbox" checked>
@@ -61,6 +72,15 @@
                 </menu>
             </div>
         </aside>
+
+        <div class="float-popup-menus">
+
+            <float-popup-menu js-id="settings" name-icon="settings" external-text="Settings for chars generator"     target-custom-menu="settings"></float-popup-menu>
+            
+            <float-popup-menu js-id="random-chars" name-icon="tune" external-text="Settings for chars generator" target-custom-menu="tune">
+            </float-popup-menu>
+
+        </div>
 
         <header>
             <h1>Chars Generator</h1>
@@ -90,5 +110,18 @@
         <footer>
             <p class="footer-description">To see more projects, go to <a class="link" target="_blank" href="https://vinicius-goncalves.com">vinicius-goncalves.com</a> and open the "Projects" section.</p>
         </footer>
+
+        
+        <ul>
+            <li>
+                <span>
+                    
+                </span>
+            </li>
+            <span>
+                <output></output>
+            </span>
+        </ul>
+        
     </body>
 </html>

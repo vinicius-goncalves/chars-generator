@@ -1,111 +1,130 @@
-export { CharsGeneratorSettings }
-import { getSessionStorage, scrollToBottom } from '../utils.js'
+export { RandomCharSettings }
 
-const generateButton = document.querySelector('[data-button="generate"]')
+import { getSessionStorage, hideElements } from '../utils.js'
 
-function CharsGeneratorSettings() {
+function RandomCharsFunctions() {
+
+    const upperCaseLetters = () => Math.floor(Math.random() * 26 + 65)
+    const lowerCaseLetters = () => Math.floor(Math.random() * 26 + 97)
+
+    this.randomLetter = function() {
+        return String.fromCharCode(Math.random() < .5 
+            ? upperCaseLetters() 
+            : lowerCaseLetters())
+    }
+
+    this.randomNumber = function() {
+        return Math.trunc(Math.random() * (9 - 0 + 1) + 0)
+    }
+
+    this.randomSymbol = function() {
+        const symbols = '!@#$%&*()'
+        return symbols.split('')[Math.floor(Math.random() * symbols.length)]
+    }
+}
+
+function RandomCharSettings() {
         
+    RandomCharsFunctions.call(this)
+
     this.letters = true
     this.numbers = true
     this.symbols = true
     this.length = 5
 
-    CharsGeneratorSettings.prototype.setChars = function (type, booleanValue) {
+    RandomCharSettings.prototype.setChars = function (type, booleanValue) {
         
-        switch(type) {
+        const validTypes = ['letters', 'numbers', 'symbols']
 
-            case 'letters':
-                this.letters = booleanValue
-                break
-            case 'symbols':
-                this.symbols = booleanValue
-                break
-            case 'numbers':
-                this.numbers = booleanValue
-                break
-            default:
+        if(!validTypes.includes(type)) {
+            throw new TypeError('Invalid type.')
         }
+
+        this[type] = booleanValue
 
         return this
     }
 
-    CharsGeneratorSettings.prototype.getCharsMethods = function() {
+    RandomCharSettings.prototype.getCharsMethods = function() {
 
-        const upperCaseLetters = () => Math.floor(Math.random() * 26 + 65)
-        const lowerCaseLetters = () => Math.floor(Math.random() * 26 + 97)
-
-        const getRandomLetter = () => String.fromCharCode(Math.random() < .5 
-            ? upperCaseLetters() 
-            : lowerCaseLetters())
-
-        const getRandomNumber = () => Math.trunc(Math.random() * (9 - 0 + 1) + 0)
-        const getRandomSymbol = () => ['!', '@', '#', '$'][Math.floor(Math.random() * 4)]
-
-        const charsType = {
-            'letters': this.letters,
-            'numbers': this.numbers,
-            'symbols': this.symbols
-        }
-
+        const charsType = getSessionStorage('random-chars') || {
+                'letters': this.letters,
+                'numbers': this.numbers,
+                'symbols': this.symbols
+            }
+        
         const methodsMap = [
-            ['letters', getRandomLetter],
-            ['numbers', getRandomNumber],
-            ['symbols', getRandomSymbol]
+            ['letters', this.randomLetter],
+            ['numbers', this.randomNumber],
+            ['symbols', this.randomSymbol]
         ].filter(([ method ]) => charsType[method] === true)
 
         return methodsMap
     }
 
-    CharsGeneratorSettings.prototype.getLength = function() {
+    RandomCharSettings.prototype.getLength = function() {
         return this.length
     }
 
-    CharsGeneratorSettings.prototype.setLength = function(length) {
+    RandomCharSettings.prototype.setLength = function(length) {
         this.length = length
         return this
     }
+
+    RandomCharSettings.prototype.getGeneratorFunction = function* () {
+        
+        const methods = this.getCharsMethods()
+        const methodsLength = Array.isArray(methods)
+            ? methods.length
+            : Number.MAX_SAFE_INTEGER
+
+        yield methods[Math.floor(Math.random() * methodsLength)][1]()
+    }  
 }
 
-function getRandomCharsSettings() {
-    const randomCharsObj = getSessionStorage('random-chars')
-    const generatorObject = Object.setPrototypeOf(randomCharsObj, CharsGeneratorSettings.prototype)
-    return generatorObject
-}
+const generateButton = document.querySelector('[data-button="generate"]')
+const outputResult = document.querySelector('.final-result')
 
-function* randomChar() {
+const floatPopupMenu = document.querySelector('[js-id="random-chars"]')
+const getCustomMenu = (value) => document.querySelector(`[data-custom-menu="${value}"]`)
+
+floatPopupMenu.addEventListener('click', (event) => {
+
+    const closestPopupMenu = event.target.closest('float-popup-menu')
+    const customMenuTarget = closestPopupMenu.getAttribute('target-custom-menu')
     
-    const generatorObject = getRandomCharsSettings()
-    const methodsMap = generatorObject.getCharsMethods()
-
-    for(let i = 0; i < generatorObject.length; i++) {
-        yield methodsMap[Math.floor(Math.random() * methodsMap.length)][1]()
+    getCustomMenu(customMenuTarget).onclick = (event) => {
+        event.stopPropagation()
     }
-}
-
-generateButton.addEventListener('click', () => {
-
-    scrollToBottom(document.documentElement)
     
-    const output = document.querySelector('output')
-    output.textContent = ''
+    // const allCheckboxes = [...closestMenu.querySelectorAll('input[type="checkbox"]')]
+    
+    // const amountCheckedBoxes = allCheckboxes.count(checkbox => checkbox.checked)
 
-    const wordToWrite = Array.from({ length: 64 }, () => Math.floor(Math.random() * 26 + 65)).map(item => String.fromCharCode(item)).join('')
+    // if(amountCheckedBoxes >= 2) {
+    //     allCheckboxes.forEach(checkbox => checkbox.disabled = false)
+    //     return
+    // }
 
-    let currIndex = 0
-    let currChars = ''
+    // const lastUncheckedBox = allCheckboxes.find(checkbox => checkbox.checked)
+    // lastUncheckedBox.setAttribute('disabled', true)
+})
 
-    const generator = randomChar()
-    const charsSettings = getRandomCharsSettings()
+const randomCharSettings = new RandomCharSettings()
 
-    const int = setInterval(() => {
+document.onclick = () => {
+    
+    outputResult.innerHTML = ''
+    
+    const interval = setInterval(() => {
+        
+        const { value } = randomCharSettings.getGeneratorFunction().next()
 
-        if(output.textContent.length >= charsSettings.length) {
-            clearInterval(int)
-            return
+        if(outputResult.textContent.length >= randomCharSettings.length) {
+            clearInterval(interval)
         }
 
-        const value = generator.next().value
-        output.textContent += value
+        outputResult.textContent += value
 
-    }, 50)
-})
+    }, 10)
+}
